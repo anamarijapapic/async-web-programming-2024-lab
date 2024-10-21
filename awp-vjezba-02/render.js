@@ -47,12 +47,12 @@ const render = {
 
   clearClassesForTd: function () {
     const coloredCells = [
-      ...document.getElementsByClassName('plava'),
+      ...document.getElementsByClassName('zuta'),
       ...document.getElementsByClassName('crvena'),
     ];
 
     coloredCells.forEach((e) => {
-      e.classList.remove('plava');
+      e.classList.remove('zuta');
       e.classList.remove('crvena');
     });
   },
@@ -64,7 +64,7 @@ const render = {
       throw new Error(`Polje ${id} ne postoji!`);
     }
 
-    cell.classList.remove('plava');
+    cell.classList.remove('zuta');
     cell.classList.remove('crvena');
 
     cell.classList.add(className);
@@ -73,7 +73,7 @@ const render = {
   // popunjavamo tablicu
   draw: function (gameData) {
     const classes = {
-      p: 'plava',
+      z: 'zuta',
       c: 'crvena',
     };
 

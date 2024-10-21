@@ -24,7 +24,7 @@ const igra = {
    * @method init
    */
   init: function () {
-    this.currentPlayer = 'p';
+    this.currentPlayer = 'z';
     this.cbFn = this.makeMove.bind(this);
     render.init(this.cbFn);
   },
@@ -43,14 +43,14 @@ const igra = {
       // Check if the game is over
       if (this.isGameOver()) {
         // Declare the winner
-        if (this.currentPlayer === 'p') {
-          console.log('Player "plavi" won!');
+        if (this.currentPlayer === 'z') {
+          console.log('Player "zuti" won!');
         } else {
           console.log('Player "crveni" won!');
         }
       }
       // Switch player
-      this.currentPlayer = this.currentPlayer === 'p' ? 'c' : 'p';
+      this.currentPlayer = this.currentPlayer === 'z' ? 'c' : 'z';
     }
   },
 
