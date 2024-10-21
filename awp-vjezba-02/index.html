@@ -6,11 +6,17 @@
   </head>
   <body>
     <h1 id="igra-naslov">Connect Four</h1>
-    <p class="info">Tablica za igru. U render.js ne treba ništa mijenjati! Potrebno je samo pozvati "render.draw()" za svaki potez.</p>
 
     <table id="igra-tablica">
 
     </table>
+
+    <p class="info">Igrač na potezu: <span id="igra-igrac"></span></p>
+    <p class="info">Broj poteza: <span id="igra-potezi"></span></p>
+    <p class="info">Pobjednik: <span id="igra-pobjednik"></span></p>
+    <p class="info">Rezultat: žuti (<span id="igra-z-pobjede"></span>) - crveni (<span id="igra-c-pobjede"></span>)</p>
+
+    <button id="igra-restart">Restart</button>
 
     <script src="./render.js"></script>
     <script src="./igra.js"></script>

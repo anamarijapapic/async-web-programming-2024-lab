@@ -19,14 +19,48 @@ const igra = {
   currentPlayer: null,
 
   /**
+   * @property {number} moveNumber - Number of moves.
+   */
+  moveCount: 0,
+
+  /**
+   * @property {number} zWins - Number of yellow wins.
+   */
+  zWins: 0,
+
+  /**
+   * @property {number} cWins - Number of red wins.
+   */
+  cWins: 0,
+
+  /**
    * Initializes the game.
    * Calls render.init with a callback function - makeMove.
    * @method init
    */
-  init: function () {
-    this.currentPlayer = 'z';
+  init: function (startPlayer = 'z', zWins = 0, cWins = 0) {
+    this.board = {};
+    this.moveCount = 0;
+    document.getElementById('igra-potezi').innerText = this.moveCount;
+    this.currentPlayer = startPlayer;
+    document.getElementById('igra-igrac').innerText =
+      startPlayer === 'z' ? 'zuti' : 'crveni';
+    document.getElementById('igra-pobjednik').innerText = '-';
+    this.zWins = zWins;
+    document.getElementById('igra-z-pobjede').innerText = this.zWins;
+    this.cWins = cWins;
+    document.getElementById('igra-c-pobjede').innerText = this.cWins;
     this.cbFn = this.makeMove.bind(this);
     render.init(this.cbFn);
+  },
+
+  /**
+   * Restarts the game.
+   * @method restart
+   */
+  restart: function () {
+    render.clear();
+    this.init(this.currentPlayer, this.zWins, this.cWins);
   },
 
   /**
@@ -40,17 +74,28 @@ const igra = {
       this.board[`${x}-${y}`] = this.currentPlayer;
       console.log(`Move: ${this.currentPlayer} -> x: ${x}, y: ${y}`);
       render.draw(this.board);
+      this.moveCount++;
+      document.getElementById('igra-potezi').innerText = this.moveCount;
       // Check if the game is over
       if (this.isGameOver()) {
         // Declare the winner
         if (this.currentPlayer === 'z') {
           console.log('Player "zuti" won!');
+          this.zWins++;
+          document.getElementById('igra-z-pobjede').innerText = this.zWins;
         } else {
           console.log('Player "crveni" won!');
+          this.cWins++;
+          document.getElementById('igra-c-pobjede').innerText = this.cWins;
         }
+
+        document.getElementById('igra-pobjednik').innerText =
+          this.currentPlayer === 'z' ? 'zuti' : 'crveni';
       }
       // Switch player
       this.currentPlayer = this.currentPlayer === 'z' ? 'c' : 'z';
+      document.getElementById('igra-igrac').innerText =
+        this.currentPlayer === 'z' ? 'zuti' : 'crveni';
     }
   },
 
@@ -164,3 +209,7 @@ const igra = {
 };
 
 igra.init();
+
+document.getElementById('igra-restart').onclick = () => {
+  igra.restart();
+};
