@@ -1,0 +1,50 @@
+html, body {
+  text-align: center;
+  margin: auto;
+  font-family: sans-serif;
+}
+
+#igra-naslov {
+  margin: 20px;
+  padding: 10px;
+  border: 5px solid #0047AB;
+  border-radius: 10px;
+  background-color: #1F51FF;
+  color: #FFF;
+}
+
+#igra-tablica {
+  margin: auto;
+  padding: 10px;
+  border: 5px solid #0047AB;
+  border-radius: 10px;
+  background-color: #1F51FF;
+}
+
+#igra-tablica td {
+  padding: 25px;
+  border: 5px solid #0047AB;
+  border-radius: 50%;
+  background-color: #FFF;
+}
+
+#igra-tablica td:hover {
+  cursor: pointer;
+}
+
+.info {
+  font-style: italic;
+  color: #333;
+}
+
+.crvena {
+  background-color: rgb(194, 79, 79) !important;
+}
+
+.zuta {
+  background-color: #FDDA0D !important;
+}
+
+.zuta:hover, .crvena:hover {
+  cursor: auto;
+}
