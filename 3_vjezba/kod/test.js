@@ -9,5 +9,5 @@ try {
     console.log(data);
   });
 } catch (error) {
-  console.log('Error parsing text files:', error);
+  console.log('Error parsing/appending text files:', error);
 }

@@ -40,13 +40,33 @@ async function parseTextFiles() {
     console.log('Error reading directory contents:', error);
   }
 
+  // Create a new file - replaces the file if it already exists
+  const combinationFilePath = path.join(
+    __dirname,
+    '../tekstualneDatoteke-kombinacija.txt'
+  );
+  try {
+    await fsPromises.writeFile(combinationFilePath, '');
+    console.log(`Created empty file ${combinationFilePath}.`);
+  } catch (error) {
+    console.log('Error creating file:', error);
+  }
+
   // Parse each file
   let data = [];
   for (const file of textFiles) {
     const filePath = path.join(folderPath, file);
     const [fileContent, fileData] = await parseTextFile(filePath);
     data.push(fileData);
-    // TO-DO: Write to a new file - append file content without spaces
+    try {
+      await fsPromises.appendFile(
+        combinationFilePath,
+        fileContent.replace(/\s+/g, '')
+      );
+      console.log(`File ${file} appended.`);
+    } catch (error) {
+      console.log('Error appending file:', error);
+    }
   }
 
   return data;
@@ -77,6 +97,7 @@ async function parseTextFile(filePath) {
 
     // Count total word count
     const words = fileContent.split(' ');
+    // const words = fileContent.split(/\s+/g);
     const totalWordCount = words.length;
 
     // Count words with the same length
@@ -99,8 +120,6 @@ async function parseTextFile(filePath) {
       ukupanBrojRijeci: totalWordCount,
       brojRijeciSaIstimBrojemSlova: wordLengths,
     };
-
-    // TO-DO: Write to a new file - append file content without spaces
   } catch (error) {
     console.log('Error reading file:', error);
   }
