@@ -4,10 +4,10 @@
 
 const { parseTextFiles } = require('./index');
 
-try {
-  parseTextFiles().then((data) => {
+parseTextFiles()
+  .then((data) => {
     console.log(data);
+  })
+  .catch((error) => {
+    console.log('Error parsing/appending text files:', error);
   });
-} catch (error) {
-  console.log('Error parsing/appending text files:', error);
-}

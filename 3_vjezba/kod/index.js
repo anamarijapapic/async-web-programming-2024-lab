@@ -18,8 +18,8 @@ const fsPromises = fs.promises; // asynchronous, promise-based
  * @returns data {Array} - Array of objects, where each object represents one file stats.
  */
 async function parseTextFiles() {
-  const folderName = '../tekstualneDatoteke';
-  const folderPath = path.join(__dirname, folderName);
+  const folderName = 'tekstualneDatoteke';
+  const folderPath = path.join(__dirname, '..', folderName);
   console.log(`Reading files from ${folderPath}.`);
 
   // Check if folder exists
@@ -43,7 +43,8 @@ async function parseTextFiles() {
   // Create a new file - replaces the file if it already exists
   const combinationFilePath = path.join(
     __dirname,
-    '../tekstualneDatoteke-kombinacija.txt'
+    '..',
+    'tekstualneDatoteke-kombinacija.txt'
   );
   try {
     await fsPromises.writeFile(combinationFilePath, '');
