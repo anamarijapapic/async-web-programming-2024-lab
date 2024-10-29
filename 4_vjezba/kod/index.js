@@ -1,87 +1,81 @@
-const readline = require('readline')
+const readline = require('readline');
 
-const {
-  Igra: IgraPotapanja,
-  DULJINA_STRANICE_PLOCE,
-} = require('./igra')
+const { Igra: IgraPotapanja, DULJINA_STRANICE_PLOCE } = require('./igra');
 
-const novaIgra = new IgraPotapanja()
+const novaIgra = new IgraPotapanja();
 
-const questionTekst =
-`
+const questionTekst = `
 Opcije:
 - n          => napravi novu igru
 - p          => ispisi plocu
 - m x:1 y:3 => napravi potez na ovim koordinatama
 - q          => zaustavi proces
 
-Vas odabir: `
+Vas odabir: `;
 
-const moveRegex = new RegExp(/m\ x:\d+\ y:\d/)
+const moveRegex = new RegExp(/m\ x:\d+\ y:\d/);
 /**
  * Helper to format user input
  * @param {String} input
  * @returns
  */
-function formatInput (input) {
+function formatInput(input) {
   if (!input) {
-    return {}
+    return {};
   }
 
   switch (input) {
     case 'n':
     case 'p':
     case 'q':
-      return { input }
+      return { input };
   }
 
   if (moveRegex.test(input)) {
-    const splitInputs = input.split(' ')
-    const formattedInput = { input: 'm' }
+    const splitInputs = input.split(' ');
+    const formattedInput = { input: 'm' };
 
-    for (let i = 1;i < 3; i++) {
-      const [key, value] = splitInputs[i].split(':')
-      formattedInput[key] = Number(value)
+    for (let i = 1; i < 3; i++) {
+      const [key, value] = splitInputs[i].split(':');
+      formattedInput[key] = Number(value);
     }
-    return formattedInput
+    return formattedInput;
   }
   // wrong input
-  return {}
+  return {};
 }
 
-function inputLoop (igraObj) {
+function inputLoop(igraObj) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-  })
+  });
 
-  rl.question(questionTekst, input => {
-    rl.close()
+  rl.question(questionTekst, (input) => {
+    rl.close();
 
     try {
-      const formattedInput = formatInput(input)
-      console.log(formattedInput)
+      const formattedInput = formatInput(input);
+      console.log(formattedInput);
       /*
         Ovdje dodati kod za razlicite odabire.
         Primjeri poziva:
         - igraObj.ispisPloce()
         - igraObj.napraviPotez({x: 1, y: 2})
       */
-    } catch (err) {
+    } catch (err) {}
 
-    }
-
-    console.log('\n')
-    process.nextTick(() => inputLoop(igraObj))
-  })
+    console.log('\n');
+    process.nextTick(() => inputLoop(igraObj));
+  });
 }
 
 /**
- * 
- * @param {Object} igraObj 
+ *
+ * @param {Object} igraObj
  */
-function main (igraObj) {
-  inputLoop(igraObj)
+function main(igraObj) {
+  inputLoop(igraObj);
 }
 
-process.nextTick(() => main(novaIgra))
+process.nextTick(() => main(novaIgra));
