@@ -77,15 +77,11 @@ function formatInput(input) {
  * @param {Error} error
  */
 function logError(error) {
-  try {
-    const logFilePath = path.join(__dirname, 'log.txt');
-    const logMessage = `${new Date().toString()} ${error.name} ${
-      error.stack
-    }\n`;
-    fs.appendFileSync(logFilePath, logMessage);
-  } catch (err) {
-    console.error('Failed to log error:', err);
-  }
+  const logFilePath = path.join(__dirname, 'log.txt');
+  const logMessage = `${new Date().toString()} ${error.name} ${error.stack}\n`;
+  fs.promises
+    .appendFile(logFilePath, logMessage)
+    .catch((err) => console.error('Failed to log error:', err));
 }
 
 function inputLoop(igraObj) {
