@@ -9,7 +9,7 @@ const { Igra: IgraPotapanja, DULJINA_STRANICE_PLOCE } = require('./igra');
  * Custom error class
  * Custom status codes description:
  * - `600`: Unos nije valjan: Nema unosa
- * - `601`: Unos nije` valjan: Krivi unos
+ * - `601`: Unos nije valjan: Krivi unos
  * - `700`: Potez nije valjan: Igra zavrsena, a korisnik pokusava napraviti potez
  * - `701`: Potez nije valjan: Potez je izvan ploce
  * @class MyBaseError
@@ -77,15 +77,11 @@ function formatInput(input) {
  * @param {Error} error
  */
 function logError(error) {
-  try {
-    const logFilePath = path.join(__dirname, 'log.txt');
-    const logMessage = `${new Date().toString()} ${error.name} ${
-      error.stack
-    }\n`;
-    fs.appendFileSync(logFilePath, logMessage);
-  } catch (err) {
-    console.error('Failed to log error:', err);
-  }
+  const logFilePath = path.join(__dirname, 'log.txt');
+  const logMessage = `${new Date().toString()} ${error.name} ${error.stack}\n`;
+  fs.promises
+    .appendFile(logFilePath, logMessage)
+    .catch((err) => console.error('Failed to log error:', err));
 }
 
 function inputLoop(igraObj) {
