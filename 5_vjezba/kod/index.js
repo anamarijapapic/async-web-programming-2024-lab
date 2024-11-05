@@ -4,6 +4,11 @@
 const path = require('path');
 const fs = require('fs');
 const fsPromises = fs.promises;
+const util = require('util');
+const stream = require('stream');
+const sharp = require('sharp'); // Node.js image processing module
+
+const pipelinePromise = util.promisify(stream.pipeline);
 
 const DEFAULT_IMAGE_SIZES = ['150x150', '100x100', '50x50'];
 const inputDirPath = path.join(__dirname, '..', 'slike');
@@ -47,6 +52,60 @@ async function processImages() {
     console.log('Found image files (.jpg):', imageFiles);
   } catch (error) {
     console.log('Error reading directory contents:', error);
+  }
+
+  // Resize images
+  for (const file of imageFiles) {
+    console.log(`Processing image ${file}...`);
+    const filePath = path.join(inputDirPath, file);
+
+    for (const size of DEFAULT_IMAGE_SIZES) {
+      await resizeImage(filePath, size);
+    }
+  }
+}
+
+/**
+ * Resizes an image to the given size.
+ *
+ * The resized image is saved in the output directory.
+ * New file name is in format 'filename-SIZExSIZE.ext'.
+ *
+ * @function resizeImage
+ * @param {String} filePath - Path to the image file
+ * @param {String} size - Size in the format 'WIDTHxHEIGHT'
+ * @returns {void}
+ */
+async function resizeImage(filePath, size) {
+  // Check if size is in the correct format
+  const sizeRegex = new RegExp(/^\d+x\d+$/);
+  if (!sizeRegex.test(size)) {
+    console.log(`Invalid size format: ${size}. Use format 'WIDTHxHEIGHT'.`);
+    return;
+  }
+
+  // Get width and height values from size string
+  const [width, height] = size.split('x').map(Number);
+
+  // Construct output file path
+  // Example: 'slika1.jpg' => 'slika1-150x150.jpg', in corresponding directories
+  const extName = path.extname(filePath);
+  const fileName = path.basename(filePath, extName);
+  const outputFileName = `${fileName}-${size}${extName}`;
+  const outputPath = path.join(outputDirPath, outputFileName);
+
+  console.log(`Resizing image ${fileName} to ${size}...`);
+
+  try {
+    const rfs = fs.createReadStream(filePath);
+    const wfs = fs.createWriteStream(outputPath);
+
+    const transformer = sharp().resize(width, height);
+
+    await pipelinePromise(rfs, transformer, wfs);
+    console.log(`Image ${fileName} resized to ${size}.`);
+  } catch (error) {
+    console.log('Error resizing image:', error);
   }
 }
 

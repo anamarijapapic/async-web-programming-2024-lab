@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/asinkrono-web-programiranje/2024_anamarijapapic/issues"
   },
-  "homepage": "https://github.com/asinkrono-web-programiranje/2024_anamarijapapic#readme"
+  "homepage": "https://github.com/asinkrono-web-programiranje/2024_anamarijapapic#readme",
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
 }
