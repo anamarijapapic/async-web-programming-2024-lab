@@ -11,6 +11,21 @@ const sharp = require('sharp'); // Node.js image processing module
 const pipelinePromise = util.promisify(stream.pipeline);
 
 const DEFAULT_IMAGE_SIZES = ['150x150', '100x100', '50x50'];
+
+// Check if CLI arguments are provided
+const args = process.argv.slice(2); // Remove first two arguments (node and script paths)
+const dimensions = [];
+if (args.length === 2 && args[0] === '--velicina') {
+  console.log('Custom image dimensions provided:', args[1]);
+  dimensions.push(args[1]);
+} else if (args.length !== 0) {
+  console.log('Invalid CLI arguments. Use format: --velicina WIDTHxHEIGHT');
+  process.exit(1);
+} else {
+  console.log('Using default image dimensions:', DEFAULT_IMAGE_SIZES);
+  dimensions.push(...DEFAULT_IMAGE_SIZES);
+}
+
 const inputDirPath = path.join(__dirname, '..', 'slike');
 const outputDirPath = path.join(__dirname, '..', 'slike-resized');
 
@@ -73,7 +88,7 @@ async function processImages() {
     console.log(`Processing image ${file}...`);
     const filePath = path.join(inputDirPath, file);
 
-    for (const size of DEFAULT_IMAGE_SIZES) {
+    for (const size of dimensions) {
       try {
         const resizedFilePath = await resizeImage(filePath, size);
         const stats = await fsPromises.stat(resizedFilePath);
@@ -88,6 +103,11 @@ async function processImages() {
   }
 
   // Write file stats to a file
+  if (fileStats.length === 0) {
+    console.log('No images resized. No file stats to write.');
+    return;
+  }
+
   console.log('File stats:', fileStats);
   const fileStatsFilePath = path.join(
     __dirname,
