@@ -1,0 +1,26 @@
+{
+  "name": "5_vjezba",
+  "version": "0.0.1",
+  "description": "[AWP] Vježba 5 - Rad sa Stream-om",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/asinkrono-web-programiranje/2024_anamarijapapic.git"
+  },
+  "keywords": [
+    "awp",
+    "5_vjezba"
+  ],
+  "author": "Anamarija Papić",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/asinkrono-web-programiranje/2024_anamarijapapic/issues"
+  },
+  "homepage": "https://github.com/asinkrono-web-programiranje/2024_anamarijapapic#readme",
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}
