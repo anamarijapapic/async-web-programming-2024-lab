@@ -5,26 +5,33 @@ const path = require('path');
 // Zadatak 1.
 function zdk1Fn(cb) {
   let callsCount = 0;
+  let allParams = [];
+
+  if (typeof cb !== 'function') {
+    return {
+      poruka: 'Krivi poziv funkcije!',
+      ukupanBrojPozivaFunkcije: callsCount,
+    };
+  }
+
   return function (...args) {
     callsCount++;
-    if (typeof cb !== 'function') {
-      return {
-        poruka: 'Krivi poziv funkcije!',
-        ukupanBrojPozivaFunkcije: callsCount,
-      };
-    }
+    allParams.push(args);
+
     return {
-      ...args,
+      allParams,
       ukupanBrojPozivaFunkcije: callsCount,
     };
   };
 }
 
-const zdk1 = zdk1Fn();
+const zdk1 = zdk1Fn(() => {});
+console.log(zdk1(1, 2, 3));
+console.log(zdk1('a', 'b', 'c'));
 console.log(zdk1());
-console.log(zdk1());
-console.log(1, 2, 3);
-console.log(1, 2, 3);
+
+const _zdk1 = zdk1Fn('string, ne cb');
+console.log(_zdk1);
 
 // Zadatak 2.
 function zdk2Fn() {
