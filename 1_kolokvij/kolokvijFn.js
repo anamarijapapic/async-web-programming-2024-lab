@@ -35,7 +35,7 @@ function zdk2Fn() {
   podaciKeys.forEach((key) => {
     const data = podaci[key];
     data.forEach((el) => {
-      const buff = new Buffer.from(data, 'base64');
+      const buff = new Buffer.from(el, 'base64');
       const base64data = buff.toString('utf-8');
       decoded[el] = base64data;
     });
