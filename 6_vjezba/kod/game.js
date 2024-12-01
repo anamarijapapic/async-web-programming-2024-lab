@@ -96,7 +96,10 @@ function Game () {
       pointBox.currentPosition = pointBox.nextPosition
     })
 
-    if (playerQueuedMove.x) {
+    // BUG FIX:
+    // Prijašnji kod `if (playerQueuedMove.x)` rezultira false za x = 0
+    // pa se crveni kvadrat (player) nije mogao renderirati na ploči u prvom stupcu - indeks 0
+    if (playerQueuedMove.x !== undefined && playerQueuedMove.y !== undefined) {
       gameState[playerQueuedMove.x][playerQueuedMove.y] = 'player'
 
       if (!areMovesTheSame(playerQueuedMove, playerPreviousMove) && typeof gameState[playerPreviousMove.x][playerPreviousMove.y] === 'string') {
