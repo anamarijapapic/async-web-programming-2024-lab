@@ -8,8 +8,8 @@ async function getByAuthorId(authorId) {
     .innerJoin('authors', 'authors_songs.author_id', 'authors.id')
     .select(
       'authors_songs.*',
-      'songs.name as song_name',
-      'authors.name as author_name'
+      'authors.name as author_name',
+      'songs.name as song_name'
     )
     .where({ author_id: authorId });
 }
