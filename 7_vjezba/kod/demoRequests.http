@@ -1,0 +1,109 @@
+@hostname = localhost
+@port = {{$dotenv PORT}}
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+###
+
+# @name = Check health
+GET http://{{host}}/health HTTP/1.1
+
+###
+
+# @name = Get all authors
+GET http://{{host}}/authors HTTP/1.1
+
+###
+# @prompt authorId Id of the author to get
+
+# @name = Get an author
+GET http://{{host}}/authors/{{authorId}} HTTP/1.1
+
+###
+# @prompt authorName Name of the author
+
+# @name = Create an author
+POST http://{{host}}/authors HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "name": "{{authorName}}"
+}
+
+###
+# @prompt authorId Id of the author to update
+# @prompt authorName Updated name of the author
+
+# @name = Update an author
+PUT http://{{host}}/authors/{{authorId}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "name": "{{authorName}}"
+}
+
+###
+# @prompt authorId Id of the author to delete
+
+# @name = Delete an author
+DELETE http://{{host}}/authors/{{authorId}} HTTP/1.1
+
+###
+
+# @name = Get all songs
+GET http://{{host}}/songs HTTP/1.1
+
+###
+# @prompt songId Id of the song to get
+
+# @name = Get a song
+GET http://{{host}}/songs/{{songId}} HTTP/1.1
+
+###
+# @prompt songName Name of the song
+
+# @name = Create a song
+POST http://{{host}}/songs HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "name": "{{songName}}"
+}
+
+###
+# @prompt songId Id of the song to update
+# @prompt songName Updated name of the song
+
+# @name = Update a song
+PUT http://{{host}}/songs/{{songId}} HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "name": "{{songName}}"
+}
+
+###
+# @prompt songId Id of the song to delete
+
+# @name = Delete a song
+DELETE http://{{host}}/songs/{{songId}} HTTP/1.1
+
+###
+# @prompt authorId Id of the author to get songs
+
+# @name = Get all songs by an author
+GET http://{{host}}/authors/{{authorId}}/songs HTTP/1.1
+
+###
+# @prompt authorId Id of the author
+# @prompt songId Id of the song
+
+# @name = Create relationship between an author and a song
+POST http://{{host}}/authors/{{authorId}}/songs/{{songId}} HTTP/1.1
+
+###
+# @prompt authorId Id of the author
+# @prompt songId Id of the song
+
+# @name = Delete relationship between an author and a song
+DELETE http://{{host}}/authors/{{authorId}}/songs/{{songId}} HTTP/1.1
