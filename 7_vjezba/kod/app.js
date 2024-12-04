@@ -1,23 +1,24 @@
-require('dotenv-safe').config()
-const Koa = require('koa')
-const bodyParser = require('koa-bodyparser')
+require('dotenv-safe').config();
+const Koa = require('koa');
+const bodyParser = require('koa-bodyparser');
 
-const app = new Koa()
+const app = new Koa();
 
-app.use(bodyParser())
+app.use(bodyParser());
 
 app.use(async (ctx, next) => {
   try {
-    await next()
+    await next();
   } catch (err) {
-    console.error(err)
+    console.error(err);
     ctx.body = {
       err,
-      message: err.message
-    }
+      message: err.message,
+    };
   }
-})
+});
 
-app.use(require('./route/index').routes())
+app.use(require('./route/index').routes());
+app.use(require('./route/author').routes());
 
-module.exports = app
+module.exports = app;
