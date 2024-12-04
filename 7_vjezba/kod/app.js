@@ -20,5 +20,6 @@ app.use(async (ctx, next) => {
 
 app.use(require('./route/index').routes());
 app.use(require('./route/author').routes());
+app.use(require('./route/song').routes());
 
 module.exports = app;
