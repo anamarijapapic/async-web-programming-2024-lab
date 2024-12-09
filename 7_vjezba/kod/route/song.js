@@ -1,4 +1,6 @@
 const Router = require('@koa/router');
+const Joi = require('joi');
+const validationMiddleware = require('../middleware/validate');
 const songRepo = require('../repo/song');
 
 const router = new Router();
@@ -9,28 +11,55 @@ router.get('/songs', async (ctx) => {
 });
 
 // GET /songs/:songId
-router.get('/songs/:songId', async (ctx) => {
-  const songId = ctx.params.songId;
-  ctx.body = await songRepo.getById(songId);
-});
+router.get(
+  '/songs/:songId',
+  validationMiddleware.params({
+    songId: Joi.number().integer().required(),
+  }),
+  async (ctx) => {
+    const songId = ctx.params.songId;
+    ctx.body = await songRepo.getById(songId);
+  }
+);
 
 // POST /songs
-router.post('/songs', async (ctx) => {
-  const body = ctx.request.body;
-  ctx.body = await songRepo.create(body);
-});
+router.post(
+  '/songs',
+  validationMiddleware.body({
+    name: Joi.string().required(),
+  }),
+  async (ctx) => {
+    const body = ctx.request.body;
+    ctx.body = await songRepo.create(body);
+  }
+);
 
 // PUT /songs/:songId
-router.put('/songs/:songId', async (ctx) => {
-  const songId = ctx.params.songId;
-  const body = ctx.request.body;
-  ctx.body = await songRepo.update(songId, body);
-});
+router.put(
+  '/songs/:songId',
+  validationMiddleware.params({
+    songId: Joi.number().integer().required(),
+  }),
+  validationMiddleware.body({
+    name: Joi.string().required(),
+  }),
+  async (ctx) => {
+    const songId = ctx.params.songId;
+    const body = ctx.request.body;
+    ctx.body = await songRepo.update(songId, body);
+  }
+);
 
 // DELETE /songs/:songId
-router.delete('/songs/:songId', async function (ctx) {
-  const songId = ctx.params.songId;
-  ctx.body = await songRepo.remove(songId);
-});
+router.delete(
+  '/songs/:songId',
+  validationMiddleware.params({
+    songId: Joi.number().integer().required(),
+  }),
+  async function (ctx) {
+    const songId = ctx.params.songId;
+    ctx.body = await songRepo.remove(songId);
+  }
+);
 
 module.exports = router;

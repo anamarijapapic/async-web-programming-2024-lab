@@ -12,7 +12,7 @@
     "db:migrate:up": "knex migrate:latest",
     "db:seed": "knex seed:run",
     "test:run": "mocha -r ./apiTest.js **/*.spec.js",
-    "test": "echo 'Nemate jos testova...'"
+    "test": "run-s db:reset test:run"
   },
   "keywords": [],
   "author": "Petar Ivancevic",
