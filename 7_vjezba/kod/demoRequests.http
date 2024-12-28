@@ -10,6 +10,43 @@ GET http://{{host}}/health HTTP/1.1
 
 ###
 
+# @name = Get all users
+GET http://{{host}}/users HTTP/1.1
+
+###
+# @prompt userId Id of the user to get
+
+# @name = Get an user
+GET http://{{host}}/users/{{userId}} HTTP/1.1
+
+###
+# @prompt email Email of the user
+# @prompt password Password of the user
+
+# @name = Sign up: Create an user
+POST http://{{host}}/signup HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+###
+# @prompt email Email of the user
+# @prompt password Password of the user
+
+# @name = Login: Create a token
+POST http://{{host}}/login HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+###
+
 # @name = Get all authors
 GET http://{{host}}/authors HTTP/1.1
 
