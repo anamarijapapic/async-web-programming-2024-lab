@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
+const authMiddlewareJwtCheck = require('../middleware/auth');
 const validationMiddleware = require('../middleware/validate');
 const songRepo = require('../repo/song');
 
@@ -25,6 +26,7 @@ router.get(
 // POST /songs
 router.post(
   '/songs',
+  authMiddlewareJwtCheck,
   validationMiddleware.body({
     name: Joi.string().required(),
   }),
@@ -37,6 +39,7 @@ router.post(
 // PUT /songs/:songId
 router.put(
   '/songs/:songId',
+  authMiddlewareJwtCheck,
   validationMiddleware.params({
     songId: Joi.number().integer().required(),
   }),
@@ -53,6 +56,7 @@ router.put(
 // DELETE /songs/:songId
 router.delete(
   '/songs/:songId',
+  authMiddlewareJwtCheck,
   validationMiddleware.params({
     songId: Joi.number().integer().required(),
   }),

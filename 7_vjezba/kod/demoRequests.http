@@ -2,28 +2,29 @@
 @port = {{$dotenv PORT}}
 @host = {{hostname}}:{{port}}
 @contentType = application/json
+@authToken = {{login.response.body.token}}
 
 ###
 
-# @name = Check health
+# @name checkHealth
 GET http://{{host}}/health HTTP/1.1
 
 ###
 
-# @name = Get all users
+# @name getUsers
 GET http://{{host}}/users HTTP/1.1
 
 ###
 # @prompt userId Id of the user to get
 
-# @name = Get an user
+# @name getUser
 GET http://{{host}}/users/{{userId}} HTTP/1.1
 
 ###
 # @prompt email Email of the user
 # @prompt password Password of the user
 
-# @name = Sign up: Create an user
+# @name signup
 POST http://{{host}}/signup HTTP/1.1
 Content-Type: {{contentType}}
 
@@ -36,7 +37,7 @@ Content-Type: {{contentType}}
 # @prompt email Email of the user
 # @prompt password Password of the user
 
-# @name = Login: Create a token
+# @name login
 POST http://{{host}}/login HTTP/1.1
 Content-Type: {{contentType}}
 
@@ -47,21 +48,22 @@ Content-Type: {{contentType}}
 
 ###
 
-# @name = Get all authors
+# @name getAuthors
 GET http://{{host}}/authors HTTP/1.1
 
 ###
 # @prompt authorId Id of the author to get
 
-# @name = Get an author
+# @name getAuthor
 GET http://{{host}}/authors/{{authorId}} HTTP/1.1
 
 ###
 # @prompt authorName Name of the author
 
-# @name = Create an author
+# @name createAuthor
 POST http://{{host}}/authors HTTP/1.1
 Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
 
 {
     "name": "{{authorName}}"
@@ -71,9 +73,10 @@ Content-Type: {{contentType}}
 # @prompt authorId Id of the author to update
 # @prompt authorName Updated name of the author
 
-# @name = Update an author
+# @name updateAuthor
 PUT http://{{host}}/authors/{{authorId}} HTTP/1.1
 Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
 
 {
     "name": "{{authorName}}"
@@ -82,26 +85,28 @@ Content-Type: {{contentType}}
 ###
 # @prompt authorId Id of the author to delete
 
-# @name = Delete an author
+# @name deleteAuthor
 DELETE http://{{host}}/authors/{{authorId}} HTTP/1.1
+Authorization: Bearer {{authToken}}
 
 ###
 
-# @name = Get all songs
+# @name getSongs
 GET http://{{host}}/songs HTTP/1.1
 
 ###
 # @prompt songId Id of the song to get
 
-# @name = Get a song
+# @name getSong
 GET http://{{host}}/songs/{{songId}} HTTP/1.1
 
 ###
 # @prompt songName Name of the song
 
-# @name = Create a song
+# @name createSong
 POST http://{{host}}/songs HTTP/1.1
 Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
 
 {
     "name": "{{songName}}"
@@ -111,9 +116,10 @@ Content-Type: {{contentType}}
 # @prompt songId Id of the song to update
 # @prompt songName Updated name of the song
 
-# @name = Update a song
+# @name updateSong
 PUT http://{{host}}/songs/{{songId}} HTTP/1.1
 Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
 
 {
     "name": "{{songName}}"
@@ -122,25 +128,28 @@ Content-Type: {{contentType}}
 ###
 # @prompt songId Id of the song to delete
 
-# @name = Delete a song
+# @name deleteSong
 DELETE http://{{host}}/songs/{{songId}} HTTP/1.1
+Authorization: Bearer {{authToken}}
 
 ###
 # @prompt authorId Id of the author to get songs
 
-# @name = Get all songs by an author
+# @name getSongsByAuthor
 GET http://{{host}}/authors/{{authorId}}/songs HTTP/1.1
 
 ###
 # @prompt authorId Id of the author
 # @prompt songId Id of the song
 
-# @name = Create relationship between an author and a song
+# @name createAuthorSongRelationship
 POST http://{{host}}/authors/{{authorId}}/songs/{{songId}} HTTP/1.1
+Authorization: Bearer {{authToken}}
 
 ###
 # @prompt authorId Id of the author
 # @prompt songId Id of the song
 
-# @name = Delete relationship between an author and a song
+# @name deleteAuthorSongRelationship
 DELETE http://{{host}}/authors/{{authorId}}/songs/{{songId}} HTTP/1.1
+Authorization: Bearer {{authToken}}

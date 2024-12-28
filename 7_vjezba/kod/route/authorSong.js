@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
+const authMiddlewareJwtCheck = require('../middleware/auth');
 const validationMiddleware = require('../middleware/validate');
 const authorSongsRepo = require('../repo/authorSong');
 
@@ -20,6 +21,7 @@ router.get(
 // POST /authors/:authorId/songs/:songId
 router.post(
   '/authors/:authorId/songs/:songId',
+  authMiddlewareJwtCheck,
   validationMiddleware.params({
     authorId: Joi.number().integer().required(),
     songId: Joi.number().integer().required(),
@@ -34,6 +36,7 @@ router.post(
 // DELETE /authors/:authorId/songs/:songId
 router.delete(
   '/authors/:authorId/songs/:songId',
+  authMiddlewareJwtCheck,
   validationMiddleware.params({
     authorId: Joi.number().integer().required(),
     songId: Joi.number().integer().required(),

@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
+const authMiddlewareJwtCheck = require('../middleware/auth');
 const validationMiddleware = require('../middleware/validate');
 const authorRepo = require('../repo/author');
 
@@ -25,6 +26,7 @@ router.get(
 // POST /authors
 router.post(
   '/authors',
+  authMiddlewareJwtCheck,
   validationMiddleware.body({
     name: Joi.string().required(),
   }),
@@ -37,6 +39,7 @@ router.post(
 // PUT /authors/:authorId
 router.put(
   '/authors/:authorId',
+  authMiddlewareJwtCheck,
   validationMiddleware.params({
     authorId: Joi.number().integer().required(),
   }),
@@ -53,6 +56,7 @@ router.put(
 // DELETE /authors/:authorId
 router.delete(
   '/authors/:authorId',
+  authMiddlewareJwtCheck,
   validationMiddleware.params({
     authorId: Joi.number().integer().required(),
   }),
