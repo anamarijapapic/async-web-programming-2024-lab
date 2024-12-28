@@ -34,10 +34,15 @@ describe('Song Routes', () => {
   });
 
   describe('POST /songs', () => {
+    it('should require authorization', async () => {
+      await global.api.post('/songs').send({}).expect(401);
+    });
+
     it('should create a new song', async () => {
       const songName = 'New Song';
       const response = await global.api
         .post('/songs')
+        .auth(global.authToken, { type: 'bearer' })
         .send({ name: songName })
         .expect(200);
 
@@ -46,10 +51,15 @@ describe('Song Routes', () => {
   });
 
   describe('PUT /songs/:songId', () => {
+    it('should require authorization', async () => {
+      await global.api.put(`/songs/${createdSong.id}`).send({}).expect(401);
+    });
+
     it('should update the song by id', async () => {
       const songName = 'Updated Song';
       const response = await global.api
         .put(`/songs/${createdSong.id}`)
+        .auth(global.authToken, { type: 'bearer' })
         .send({ name: songName })
         .expect(200);
 
@@ -58,9 +68,14 @@ describe('Song Routes', () => {
   });
 
   describe('DELETE /songs/:songId', () => {
+    it('should require authorization', async () => {
+      await global.api.delete(`/songs/${createdSong.id}`).expect(401);
+    });
+
     it('should delete the song by id', async () => {
       const response = await global.api
         .delete(`/songs/${createdSong.id}`)
+        .auth(global.authToken, { type: 'bearer' })
         .expect(200);
 
       expect(response.body > 0).to.be.true;
