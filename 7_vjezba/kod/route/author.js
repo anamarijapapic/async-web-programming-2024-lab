@@ -1,6 +1,7 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
 const authMiddlewareJwtCheck = require('../middleware/auth');
+const lockMiddlewarePessimisticCheck = require('../middleware/lock');
 const validationMiddleware = require('../middleware/validate');
 const authorRepo = require('../repo/author');
 
@@ -14,6 +15,8 @@ router.get('/authors', async (ctx) => {
 // GET /authors/:authorId
 router.get(
   '/authors/:authorId',
+  authMiddlewareJwtCheck,
+  lockMiddlewarePessimisticCheck,
   validationMiddleware.params({
     authorId: Joi.number().integer().required(),
   }),
@@ -40,6 +43,7 @@ router.post(
 router.put(
   '/authors/:authorId',
   authMiddlewareJwtCheck,
+  lockMiddlewarePessimisticCheck,
   validationMiddleware.params({
     authorId: Joi.number().integer().required(),
   }),

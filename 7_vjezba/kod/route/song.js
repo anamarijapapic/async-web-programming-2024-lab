@@ -1,6 +1,7 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
 const authMiddlewareJwtCheck = require('../middleware/auth');
+const lockMiddlewarePessimisticCheck = require('../middleware/lock');
 const validationMiddleware = require('../middleware/validate');
 const songRepo = require('../repo/song');
 
@@ -14,6 +15,8 @@ router.get('/songs', async (ctx) => {
 // GET /songs/:songId
 router.get(
   '/songs/:songId',
+  authMiddlewareJwtCheck,
+  lockMiddlewarePessimisticCheck,
   validationMiddleware.params({
     songId: Joi.number().integer().required(),
   }),
@@ -40,6 +43,7 @@ router.post(
 router.put(
   '/songs/:songId',
   authMiddlewareJwtCheck,
+  lockMiddlewarePessimisticCheck,
   validationMiddleware.params({
     songId: Joi.number().integer().required(),
   }),
