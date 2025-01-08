@@ -1,9 +1,10 @@
+const CustomError = require('../customError');
 const resourceLockRepo = require('../repo/resourceLock');
 
 async function pessimisticLockCheck(ctx, next) {
   const userId = ctx.state.user.id;
   if (!userId) {
-    ctx.throw(401, 'User not authenticated');
+    throw new CustomError(401, 'User not authenticated');
   }
 
   let resourceId;
@@ -33,7 +34,7 @@ async function pessimisticLockCheck(ctx, next) {
   if (isResourceLocked) {
     const resourceLock = resourceLocks[0]; // Give priority to the first lock
     if (resourceLock.user_id !== userId) {
-      ctx.throw(423, 'Resource locked!'); // 423 Locked
+      throw new CustomError(423, 'Resource locked!'); // 423 Locked
     }
 
     // Allow access to the resource if the current user has locked it first

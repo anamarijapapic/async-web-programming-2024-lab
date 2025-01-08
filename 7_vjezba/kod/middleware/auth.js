@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
+const CustomError = require('../customError');
 
 async function jwtCheck(ctx, next) {
   const authToken = ctx.headers.authorization?.split(' ')[1];
 
   if (!authToken) {
-    ctx.throw(401, 'Authorization token not provided.');
+    throw new CustomError(401, 'Authorization token not provided.');
   }
 
   try {
@@ -12,7 +13,7 @@ async function jwtCheck(ctx, next) {
     ctx.state.user = decoded;
     // console.log('User data:', ctx.state.user);
   } catch (err) {
-    ctx.throw(401, 'Invalid authorization token.');
+    throw new CustomError(401, 'Invalid authorization token.');
   }
 
   return next();

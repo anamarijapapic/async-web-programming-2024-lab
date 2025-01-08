@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
+const CustomError = require('../customError');
 const authMiddlewareJwtCheck = require('../middleware/auth');
 const validationMiddleware = require('../middleware/validate');
 const resourceLockRepo = require('../repo/resourceLock');
@@ -36,7 +37,7 @@ router.post(
   async (ctx) => {
     const userId = ctx.state.user.id;
     if (!userId) {
-      ctx.throw(401, 'User not authenticated');
+      throw new CustomError(401, 'User not authenticated');
     }
 
     const resourceType = ctx.request.body.resource_type;
@@ -46,7 +47,10 @@ router.post(
       (resourceType === 'author' && !(await authorRepo.getById(resourceId))) ||
       (resourceType === 'song' && !(await songRepo.getById(resourceId)))
     ) {
-      ctx.throw(404, `Not found: ${resourceType} with id ${resourceId}`);
+      throw new CustomError(
+        404,
+        `Not found: ${resourceType} with id ${resourceId}`
+      );
     }
 
     ctx.body = await resourceLockRepo.create(resourceType, resourceId, userId);
@@ -64,7 +68,7 @@ router.delete(
   async (ctx) => {
     const userId = ctx.state.user.id;
     if (!userId) {
-      ctx.throw(401, 'User not authenticated');
+      throw new CustomError(401, 'User not authenticated');
     }
 
     const resourceLockId = ctx.params.resourceLockId;
@@ -72,7 +76,7 @@ router.delete(
     // Users can only remove their own records from the resource_locks table
     const resourceLock = await resourceLockRepo.getById(resourceLockId);
     if (resourceLock.user_id !== userId) {
-      ctx.throw(403, 'Lock does not belong to the current user');
+      throw new CustomError(403, 'Lock does not belong to the current user');
     }
 
     ctx.body = await resourceLockRepo.remove(resourceLockId);

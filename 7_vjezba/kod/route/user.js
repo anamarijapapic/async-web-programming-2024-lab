@@ -1,5 +1,6 @@
 const Router = require('@koa/router');
 const Joi = require('joi');
+const CustomError = require('../customError');
 const validationMiddleware = require('../middleware/validate');
 const userRepo = require('../repo/user');
 
@@ -47,7 +48,7 @@ router.post(
     const user = await userRepo.getByEmail(email);
 
     if (!user) {
-      ctx.throw(401, 'Wrong username or password.');
+      throw new CustomError(401, 'Wrong username or password.');
     }
 
     const passwordMatch = await userRepo.comparePasswords(
@@ -56,7 +57,7 @@ router.post(
     );
 
     if (!passwordMatch) {
-      ctx.throw(401, 'Wrong username or password.');
+      throw new CustomError(401, 'Wrong username or password.');
     }
 
     const token = userRepo.generateToken(user);
