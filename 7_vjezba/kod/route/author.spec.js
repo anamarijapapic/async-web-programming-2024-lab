@@ -24,9 +24,14 @@ describe('Author Routes', () => {
   });
 
   describe('GET /authors/:authorId', () => {
+    it('should require authorization', async () => {
+      await global.api.get(`/authors/${createdAuthor.id}`).expect(401);
+    });
+
     it('should fetch the author by id', async () => {
       const response = await global.api
         .get(`/authors/${createdAuthor.id}`)
+        .auth(global.authToken, { type: 'bearer' })
         .expect(200);
 
       expect(response.body).to.deep.equal(createdAuthor);
@@ -34,10 +39,15 @@ describe('Author Routes', () => {
   });
 
   describe('POST /authors', () => {
+    it('should require authorization', async () => {
+      await global.api.post('/authors').send({}).expect(401);
+    });
+
     it('should create a new author', async () => {
       const authorName = 'New Author';
       const response = await global.api
         .post('/authors')
+        .auth(global.authToken, { type: 'bearer' })
         .send({ name: authorName })
         .expect(200);
 
@@ -46,10 +56,15 @@ describe('Author Routes', () => {
   });
 
   describe('PUT /authors/:authorId', () => {
+    it('should require authorization', async () => {
+      await global.api.put(`/authors/${createdAuthor.id}`).send({}).expect(401);
+    });
+
     it('should update the author by id', async () => {
       const authorName = 'Updated Author';
       const response = await global.api
         .put(`/authors/${createdAuthor.id}`)
+        .auth(global.authToken, { type: 'bearer' })
         .send({ name: authorName })
         .expect(200);
 
@@ -58,9 +73,14 @@ describe('Author Routes', () => {
   });
 
   describe('DELETE /authors/:authorId', () => {
+    it('should require authorization', async () => {
+      await global.api.delete(`/authors/${createdAuthor.id}`).expect(401);
+    });
+
     it('should delete the author by id', async () => {
       const response = await global.api
         .delete(`/authors/${createdAuthor.id}`)
+        .auth(global.authToken, { type: 'bearer' })
         .expect(200);
 
       expect(response.body > 0).to.be.true;

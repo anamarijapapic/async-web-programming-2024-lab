@@ -29,11 +29,17 @@ describe('Author Song Routes', () => {
   });
 
   describe('POST /authors/:authorId/songs/:songId', () => {
+    const authorId = 5; // should be created in the seed
+    const songId = 5; // should be created in the seed
+
+    it('should require authorization', async () => {
+      await global.api.post(`/authors/${authorId}/songs/${songId}`).expect(401);
+    });
+
     it('should create a new author - song relation', async () => {
-      const authorId = 5; // should be created in the seed
-      const songId = 5; // should be created in the seed
       const response = await global.api
         .post(`/authors/${authorId}/songs/${songId}`)
+        .auth(global.authToken, { type: 'bearer' })
         .expect(200);
 
       expect(response.body.author_id).to.equal(authorId);
@@ -42,11 +48,20 @@ describe('Author Song Routes', () => {
   });
 
   describe('DELETE /authors/:authorId/songs/:songId', () => {
+    it('should require authorization', async () => {
+      await global.api
+        .delete(
+          `/authors/${createdAuthorSong.author_id}/songs/${createdAuthorSong.song_id}`
+        )
+        .expect(401);
+    });
+
     it('should delete the author - song relation', async () => {
       const response = await global.api
         .delete(
           `/authors/${createdAuthorSong.author_id}/songs/${createdAuthorSong.song_id}`
         )
+        .auth(global.authToken, { type: 'bearer' })
         .expect(200);
 
       expect(response.body > 0).to.be.true;

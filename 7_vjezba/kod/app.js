@@ -10,9 +10,9 @@ app.use(async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    console.error(err);
+    // console.error(err);
+    ctx.status = err.statusCode || err.status || 500;
     ctx.body = {
-      err,
       message: err.message,
     };
   }
@@ -22,5 +22,7 @@ app.use(require('./route/index').routes());
 app.use(require('./route/author').routes());
 app.use(require('./route/song').routes());
 app.use(require('./route/authorSong').routes());
+app.use(require('./route/user').routes());
+app.use(require('./route/resourceLock').routes());
 
 module.exports = app;
