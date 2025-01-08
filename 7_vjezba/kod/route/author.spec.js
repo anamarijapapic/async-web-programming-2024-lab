@@ -24,9 +24,14 @@ describe('Author Routes', () => {
   });
 
   describe('GET /authors/:authorId', () => {
+    it('should require authorization', async () => {
+      await global.api.get(`/authors/${createdAuthor.id}`).expect(401);
+    });
+
     it('should fetch the author by id', async () => {
       const response = await global.api
         .get(`/authors/${createdAuthor.id}`)
+        .auth(global.authToken, { type: 'bearer' })
         .expect(200);
 
       expect(response.body).to.deep.equal(createdAuthor);

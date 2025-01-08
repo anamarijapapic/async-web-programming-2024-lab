@@ -24,9 +24,14 @@ describe('Song Routes', () => {
   });
 
   describe('GET /songs/:songId', () => {
+    it('should require authorization', async () => {
+      await global.api.get(`/songs/${createdSong.id}`).expect(401);
+    });
+
     it('should fetch the song by id', async () => {
       const response = await global.api
         .get(`/songs/${createdSong.id}`)
+        .auth(global.authToken, { type: 'bearer' })
         .expect(200);
 
       expect(response.body).to.deep.equal(createdSong);
