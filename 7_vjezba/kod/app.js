@@ -24,5 +24,7 @@ app.use(require('./route/song').routes());
 app.use(require('./route/authorSong').routes());
 app.use(require('./route/user').routes());
 app.use(require('./route/resourceLock').routes());
+app.use(require('./route/album').routes());
+app.use(require('./route/albumSong').routes());
 
 module.exports = app;

@@ -187,3 +187,40 @@ Authorization: Bearer {{authToken}}
 # @name deleteResourceLock
 DELETE http://{{host}}/resource-locks/{{resourceLockId}} HTTP/1.1
 Authorization: Bearer {{authToken}}
+
+###
+
+# @name getAlbums
+GET http://{{host}}/albums HTTP/1.1
+
+###
+# @prompt albumId Id of the album to get
+
+# @name getAlbum
+GET http://{{host}}/albums/{{albumId}} HTTP/1.1
+
+###
+# @prompt albumName Name of the album
+
+# @name createAlbum
+POST http://{{host}}/albums HTTP/1.1
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+    "name": "{{albumName}}"
+}
+
+###
+# @prompt albumId Id of the album to get songs
+
+# @name getSongsByAlbum
+GET http://{{host}}/albums/{{albumId}}/songs HTTP/1.1
+
+###
+# @prompt albumId Id of the album
+# @prompt songId Id of the song
+
+# @name createAlbumSongRelationship
+POST http://{{host}}/albums/{{albumId}}/songs/{{songId}} HTTP/1.1
+Authorization: Bearer {{authToken}}

@@ -1,0 +1,3 @@
+Dodati entitet album.
+Kreirati rutu za povezivanje pjesama s albumima.
+Prikaz pjesama na albumu s vezom na autora.
